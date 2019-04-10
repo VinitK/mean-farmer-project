@@ -1,0 +1,61 @@
+<!-- Jumbotron -->
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-10">
+            <h1 class="display-4">Farmers</h1>
+        </div>
+        <div class="col-md-2">
+                <button class="btn btn-primary" routerLink="/farmers/new" routerLinkActive="active" *ngIf="userIsAuthenticated">Add New Farmer</button>
+        </div>
+    </div>
+</div>
+<!-- Spinner -->
+<div class="d-flex justify-content-center m-4" *ngIf="isLoading">
+    <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<!-- Farmer List -->
+<div *ngIf="!isLoading">
+    <div *ngIf="farmers.length>0;then content else no_content">
+    </div>
+</div>
+<ng-template #content>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4" *ngFor="let farmer of farmers">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ farmer.farmerName }}</h5>
+                        <p><a href="/farmer/{{farmer.id}}">{{ farmer.id }}</a></p>
+                        <p>{{ farmer.farmerPhone }}</p>
+                        <p>{{ farmer.farmerLanguage }}</p>
+                        <p>{{ farmer.farmerCountry }}</p>
+                        <p *ngIf="userIsAuthenticated && userId === farmer.creator">
+                            <button class="btn btn-outline-secondary mr-1" [routerLink]="['/farmers/edit', farmer.id]">Edit</button>
+                            <button class="btn btn-outline-danger mr-1" (click)="onDelete(farmer.id)">Delete</button>
+                        </p>
+                        <div style="height: 20rem; overflow: hidden; position: relative;">
+                                <img [src]="farmer.imagePath" [alt]="farmer.farmerName" class="card-img-top">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #no_content>
+    <div class="container" >
+        <h2>No Farmers in Database.</h2>
+    </div>
+</ng-template>
+<nav class="m-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" *ngIf="currentPage>1">
+            <a class="page-link" (click)="onChangedPage('previous')">Prev</a>
+        </li>
+        <li class="page-item" *ngIf="currentPage<(totalFarmers/farmersPerPage)">
+            <a class="page-link" (click)="onChangedPage('next')">Next</a>
+        </li>
+    </ul>
+</nav>  

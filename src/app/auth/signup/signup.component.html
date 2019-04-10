@@ -1,0 +1,63 @@
+<!-- Spinner -->
+<div class="d-flex justify-content-center m-4" *ngIf="isLoading">
+  <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<!-- Sign Up Form -->
+<div class="container col-md-3" *ngIf="!isLoading">
+  <h1 class="display-4">Signup</h1>
+
+  <form (submit)="onSignup(SignupForm)" #SignupForm="ngForm">
+    <p>* fields are required.</p>
+
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Name *" name="userName" ngModel #userName="ngModel" required>
+      <div *ngIf="userName.invalid" style="color:red;">
+        Please enter a valid name
+      </div>
+    </div>
+    
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="selectCountryid">Country *</label>
+      </div>  
+      <select class="custom-select" name="userCountry" ngModel #userCountry="ngModel" id="selectCountryid">
+          <option *ngFor="let country of countryList">{{ country }}</option>
+      </select>
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="selectLanguageid">Language *</label>
+      </div>  
+      <select class="custom-select" name="userLanguage" ngModel #userLanguage="ngModel" id="selectLanguageid">
+          <option *ngFor="let language of languageList">{{ language }}</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <input type="email" class="form-control" placeholder="Email *" name="userEmail" ngModel #userEmail="ngModel" required email>
+      <div *ngIf="userEmail.invalid" style="color:red;">
+        Please enter a valid email
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <input type="password" class="form-control" placeholder="Set Password *" name="userPassword" ngModel #userPassword="ngModel" required>
+      <div *ngIf="userPassword.invalid" style="color:red;">
+        Please enter a valid password
+      </div>
+    </div>
+    
+    <!-- <div class="form-group">
+      <input type="password" class="form-control" placeholder="Retype Password *" name="userPassword2" ngModel #userPassword2="ngModel" required>
+      <div *ngIf="userPassword2.invalid" style="color:red;">
+        The two passwords do not match
+      </div>
+    </div> -->
+    
+    <button type="submit" class="btn btn-primary">Signup</button>
+  
+  </form>
+</div>

@@ -1,0 +1,47 @@
+<!-- Jumbotron -->
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-10">
+            <h1 class="display-4">Farmer</h1>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary" routerLink="/farmers/new" routerLinkActive="active" *ngIf="userIsAuthenticated">Add New Farmer</button>
+        </div>
+    </div>
+</div>
+<!-- Spinner -->
+<div class="d-flex justify-content-center m-4" *ngIf="isLoading">
+    <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<!-- Farmer Card -->
+<div *ngIf="!isLoading">
+    <div *ngIf="farmer;then content else no_content">
+    </div>
+</div>
+<ng-template #content>
+    <div class="container col-md-3">
+        <div class="card">
+            <img [src]="farmer.imagePath" [alt]="farmer.farmerName" style="max-width: 10rem; max-height: 10rem;" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">{{ farmer.farmerName }}</h5>
+              <p class="card-text">{{ farmer.farmerCountry }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">{{ farmer.farmerPhone }}</li>
+              <li class="list-group-item">{{ farmer.farmerLanguage }}</li>
+              <li class="list-group-item">{{ farmer.farmerId }}</li>
+            </ul>
+            <div class="card-body" *ngIf="userIsAuthenticated && userId === farmer.creator">
+                <button class="btn btn-outline-secondary mr-1" [routerLink]="['/farmers/edit', farmer.farmerId]">Edit</button>
+                <button class="btn btn-outline-danger mr-1" (click)="onDelete(farmer.farmerId)">Delete</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #no_content>
+    <div class="container" >
+        <h2>No Farmers in Database.</h2>
+    </div>
+</ng-template>

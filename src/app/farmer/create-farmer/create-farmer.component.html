@@ -1,0 +1,64 @@
+<!-- Jumbotron -->
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-md-10">
+      <h1 class="display-4">Add New Farmer</h1>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary" routerLink="/farmers" routerLinkActive="active">View Farmers</button>
+    </div>
+  </div>
+</div>
+<!-- Spinner -->
+<div class="d-flex justify-content-center m-4" *ngIf="isLoading">
+  <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<!-- Create Farmer Form -->
+<div class="container col-md-4" *ngIf="!isLoading">
+  <form [formGroup]="form" (submit)="onSaveFarmer()">
+    <p>* fields are required.</p>
+    <div class="form-group">
+      <input type="text" formControlName="farmerName" class="form-control" placeholder="Name *" name="farmerName">
+      <div *ngIf="form.get('farmerName').invalid" style="color:red;">
+        Please enter a valid name
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="farmerPhone" class="form-control" placeholder="Phone *" name="farmerPhone">
+      <div *ngIf="form.get('farmerPhone').invalid" style="color:red;">
+        Please enter a valid phone number
+      </div>
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="selectLanguageid">Language *</label>
+      </div>
+      <select formControlName="farmerLanguage" class="custom-select" name="farmerLanguage" id="selectLanguageid">
+          <option *ngFor="let language of languageList">{{ language }}</option>
+      </select>
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="selectCountryid">Country *</label>
+      </div>  
+      <select formControlName="farmerCountry" class="custom-select" name="farmerCountry" id="selectCountryid">
+          <option *ngFor="let country of countryList">{{ country }}</option>
+      </select>
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+      </div>
+      <div class="custom-file">
+        <input type="file" (change)="onImagePicked($event)" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+      </div>
+    </div>
+    <div *ngIf="imagePreview && imagePreview !== '' && form.get('image').valid" class="mb-3 text-center">
+      <img [src]="imagePreview" [alt]="form.value.farmerName" class="rounded img-thumbnail">
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>
